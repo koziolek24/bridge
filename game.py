@@ -25,4 +25,8 @@ class Deck:
         return deck_values
 
     def remove_card(self, card):
-        self.deck.remove(card)
+        for cards in self.deck:
+            if(cards.get_card() == card.get_card()):
+                self.deck.remove(cards)
+                return
+        
