@@ -29,4 +29,7 @@ class Deck:
             if(cards.get_card() == card.get_card()):
                 self.deck.remove(cards)
                 return
-        
+
+    def set_deck(self, deck):
+        self._deck = deck
+    
