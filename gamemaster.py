@@ -33,10 +33,16 @@ class GameMaster:
     def game_start(self):
         if self.is_ready():
             self.prepare_players()
+            self.bidding()
 
     def get_players(self):
         for player in self._players:
             print(player)
+
+    def check_end(self, bids):
+        size = len(bids)
+        if bids[size - 1] == "pass" and bids[size - 2] == "pass" and bids[size - 3] == "pass" and bids[size - 4] == "pass":
+            return True
 
     def bidding(self):
         bids = []
@@ -47,10 +53,8 @@ class GameMaster:
             for player in self._players:
                 print(bids[-4:])
                 bids = get_bid(bids)
-                if len(bids) > 3:
-                    size = len(bids)
-                    if bids[size-1] == "pass" and bids[size-2] == "pass" and bids[size-3] == "pass" and bids[size-4] == "pass":
-                        self._contract = bids[-5]
-                        # todo special case when counter or re-counter
-                        # todo get sides
-                        return
+                if len(bids) > 3 and self.check_end(bids):
+                    self._contract = bids[-5]
+                    # todo special case when counter or re-counter
+                    # todo get sides
+                    return
