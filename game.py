@@ -1,4 +1,4 @@
-class card:
+class Card:
     def __init__(self, value, color):
         self._value = value
         self._color = color
@@ -13,10 +13,16 @@ class card:
         return str(self.get_value()) + self.get_color()
 
 
-class deck:
+class Deck:
     def __init__(self, deck = []):
         self.deck = deck
 
     def get_deck(self):
+        deck_values = ""
         for card in self.deck:
-            print(card.get_card(), end="")
+            deck_values += card.get_card()
+            deck_values += " "
+        return deck_values
+
+    def remove_card(self, card):
+        self.deck.remove(card)
