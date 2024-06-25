@@ -34,15 +34,15 @@ class Player:
         if(self.verify_bool(turn)):
             self._turn = turn
         else:
-            raise ValueError("turn has to be boolean\n")
+            raise TypeError("turn has to be boolean\n")
 
     def set_is_dummy(self, is_dummy):
         if(self.verify_bool(is_dummy)):
             self._is_dummy = is_dummy
         else:
-            raise ValueError("is_dummy has to be boolean\n")
+            raise TypeError("is_dummy has to be boolean\n")
 
-    def verify_bool(value):
+    def verify_bool(self, value):
         if value == True or value == False:
             return True
         else:
@@ -52,4 +52,4 @@ class Player:
         return self._deck.get_deck()
 
     def play_card(self, card):
-        self.deck.remove_card(card)
+        self._deck.remove_card(card)
