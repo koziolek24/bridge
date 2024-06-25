@@ -2,13 +2,14 @@ from game import Deck
 
 
 class Player:
-    def __init__(self, name: str, lastname: str, deck: Deck, partner=None, turn=False, is_dummy=False):
-        self._deck = deck
+    def __init__(self, name: str, lastname: str):
+        self._deck = Deck()
         self._name = name
         self._lastname = lastname
-        self._partner = partner
-        self._turn = turn
-        self._is_dummy = is_dummy
+        self._partner = None
+        self._turn = False
+        self._is_dummy = False
+        self._position = None
 
     # todo Partner
 
