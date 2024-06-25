@@ -14,22 +14,12 @@ def get_cards():
 
 def get_decks():
     cards = get_cards()
-    deck1 = []
-    deck2 = []
-    deck3 = []
-    for i in range(13):
-        id = random.randrange(len(cards))
-        card = cards[id]
-        deck1.append(card)
-        cards.remove(card)
-    for i in range(13):
-        id = random.randrange(len(cards))
-        card = cards[id]
-        deck2.append(card)
-        cards.remove(card)
-    for i in range(13):
-        id = random.randrange(len(cards))
-        card = cards[id]
-        deck3.append(card)
-        cards.remove(card)
-    return cards, deck1, deck2, deck3
+    decks = [[], [], [], []]
+    for i in range(3):
+        for j in range(13):
+            id = random.randrange(len(cards))
+            card = cards[id]
+            decks[i].append(card)
+            cards.remove(card)
+    decks[3] = cards
+    return decks

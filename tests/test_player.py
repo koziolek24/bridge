@@ -49,3 +49,14 @@ def test_player_set_is_dummy():
     assert player.get_is_dummy() == False
     player.set_is_dummy(True)
     assert player.get_is_dummy() == True
+
+def test_player_set_deck():
+    deck = Deck()
+    player = Player("Maciej", "Kozłowski", deck)
+    assert player.get_deck() == ""
+    cards = []
+    for i in range(1, 5):
+        card = Card(i, 'S')
+        cards.append(card)
+    player.set_deck(cards)
+    assert player.get_deck() == "1S 2S 3S 4S "

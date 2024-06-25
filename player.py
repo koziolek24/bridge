@@ -56,3 +56,9 @@ class Player:
 
     def play_card(self, card):
         self._deck.remove_card(card)
+
+    def __name__(self):
+        name = ""
+        name = self.get_fullname()
+        name += "\n"
+        name += self.get_deck()
