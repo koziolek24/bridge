@@ -1,7 +1,7 @@
 from game import Deck
 
 class Player:
-    def __init__(self, deck, name, lastname, partner = None, turn = False, is_dummy = False):
+    def __init__(self, name: str, lastname: str, deck: Deck, partner = None, turn = False, is_dummy = False):
         self._deck = deck
         self._name = name
         self._lastname = lastname
@@ -18,7 +18,11 @@ class Player:
         return self._lastname
 
     def get_fullname(self):
-        return self.get_name() + self.get_lastname
+        fullname = ""
+        fullname += self.get_name()
+        fullname += " "
+        fullname += self.get_lastname()
+        return fullname
 
     def get_turn(self):
         return self._turn
@@ -43,3 +47,9 @@ class Player:
             return True
         else:
             return False
+
+    def get_deck(self):
+        return self._deck.get_deck()
+
+    def play_card(self, card):
+        self.deck.remove_card(card)
