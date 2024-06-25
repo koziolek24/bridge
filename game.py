@@ -1,7 +1,7 @@
 class card:
-    def __init__(self, color, value):
-        self._color = color
+    def __init__(self, value, color):
         self._value = value
+        self._color = color
 
     def get_value(self):
         return self._value
@@ -10,5 +10,13 @@ class card:
         return self._color
 
     def get_card(self):
-        return self.get_value() + self.get_color()
+        return str(self.get_value()) + self.get_color()
 
+
+class deck:
+    def __init__(self, deck = []):
+        self.deck = deck
+
+    def get_deck(self):
+        for card in self.deck:
+            print(card.get_card(), end="")
