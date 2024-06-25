@@ -1,5 +1,5 @@
-import pytest
 from game import Deck, Card
+
 
 def test_deck():
     cards = []
@@ -8,6 +8,7 @@ def test_deck():
         cards.append(card)
     deck = Deck(cards)
     assert deck.get_deck() == "1S 2S 3S 4S "
+
 
 def test_remove_from_deck():
     cards = []

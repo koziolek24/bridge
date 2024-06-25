@@ -1,15 +1,16 @@
-from player import Player
 from decks import get_decks
 
-class Gamemaster:
+
+class GameMaster:
     def __init__(self):
         self._players = []
     # todo create player
+
     def add_player(self, player):
-        # todo weryfikacja poprawnosci player
+        # todo verify player
         if len(self._players) > 3:
             raise ValueError("Too many players in this game")
-        # optional wiele graczy w grze - 4 w jednej rozgrywce
+        # optional many players, 4 in one game
         self._players.append(player)
 
     def is_ready(self):
@@ -17,7 +18,7 @@ class Gamemaster:
             return True
         else:
             pass
-            # todo jakis error
+            # todo some kind of error
 
     def prepare_players(self):
         decks = get_decks()
@@ -26,14 +27,9 @@ class Gamemaster:
             player.set_deck(decks[i])
             self._players[i] = player
 
-
     def game_start(self):
         if self.is_ready():
             self.prepare_players()
-
-    def get_player_decks(self):
-        for player in self._players:
-            print(get_decks())
 
     def get_players(self):
         for player in self._players:

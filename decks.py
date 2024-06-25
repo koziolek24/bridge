@@ -1,6 +1,7 @@
 from game import Card
 import random
 
+
 def get_cards():
     cards = []
     colors = ["S", "C", "D", "H"]
@@ -17,8 +18,8 @@ def get_decks():
     decks = [[], [], [], []]
     for i in range(3):
         for j in range(13):
-            id = random.randrange(len(cards))
-            card = cards[id]
+            index = random.randrange(len(cards))
+            card = cards[index]
             decks[i].append(card)
             cards.remove(card)
     decks[3] = cards

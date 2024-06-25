@@ -1,7 +1,8 @@
 from game import Deck
 
+
 class Player:
-    def __init__(self, name: str, lastname: str, deck: Deck, partner = None, turn = False, is_dummy = False):
+    def __init__(self, name: str, lastname: str, deck: Deck, partner=None, turn=False, is_dummy=False):
         self._deck = deck
         self._name = name
         self._lastname = lastname
@@ -31,19 +32,19 @@ class Player:
         return self._is_dummy
 
     def set_turn(self, turn):
-        if(self.verify_bool(turn)):
+        if self.verify_bool(turn):
             self._turn = turn
         else:
             raise TypeError("turn has to be boolean\n")
 
     def set_is_dummy(self, is_dummy):
-        if(self.verify_bool(is_dummy)):
+        if self.verify_bool(is_dummy):
             self._is_dummy = is_dummy
         else:
             raise TypeError("is_dummy has to be boolean\n")
 
     def verify_bool(self, value):
-        if value == True or value == False:
+        if value is True or value is False:
             return True
         else:
             return False
@@ -56,9 +57,3 @@ class Player:
 
     def play_card(self, card):
         self._deck.remove_card(card)
-
-    def __name__(self):
-        name = ""
-        name = self.get_fullname()
-        name += "\n"
-        name += self.get_deck()
