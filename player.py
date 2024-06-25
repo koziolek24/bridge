@@ -51,5 +51,8 @@ class Player:
     def get_deck(self):
         return self._deck.get_deck()
 
+    def set_deck(self, deck):
+        self._deck.set_deck(deck)
+
     def play_card(self, card):
         self._deck.remove_card(card)
