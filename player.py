@@ -10,6 +10,7 @@ class Player:
         self._turn = False
         self._is_dummy = False
         self._position = None
+        self._side = None
 
     # todo Partner
 
@@ -58,3 +59,9 @@ class Player:
 
     def play_card(self, card):
         self._deck.remove_card(card)
+
+    def get_side(self):
+        return self._side
+
+    def set_side(self, side):
+        self._side = side
