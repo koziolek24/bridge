@@ -103,3 +103,15 @@ def get_end(bids):
             return True
         if pass_cnt != 3 and bids[i] != "pass":
             return False
+
+
+def get_card():
+    card = input("Input your card: ")
+    try:
+        if card[0] != '1':
+            card = Card(card[0], card[1:])
+        else:
+            card = Card(card[0] + card[1], card[2:])
+        return card
+    except:
+        pass

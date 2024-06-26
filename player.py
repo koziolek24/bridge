@@ -1,4 +1,5 @@
 from game import Deck, Card
+from decks import get_card
 
 
 class Player:
@@ -80,17 +81,37 @@ class Player:
             return True
         return False
 
-    def get_play(self):
+    def get_play(self, dummy):
+        print("Dummy's deck:")
+        print(dummy.get_deck())
+        print("Your deck:")
         print(self.get_deck())
         while True:
-            card = input("Input your card: ")
+            card = get_card()
             try:
-                if card[0] != '1':
-                    card = Card(card[0], card[1:])
-                else:
-                    card = Card(card[0] + card[1], card[2:])
+                self.play_card(card)
+                return
             except:
-                pass
+                print("Invalid card")
+
+    def dummy_play(self):
+        print("Your deck:")
+        print(self.get_deck())
+        print("Dummy's deck:")
+        print(self._partner.get_deck())
+        while True:
+            card = get_card()
+            try:
+                self._partner.play_card(card)
+                return
+            except:
+                print("Invalid card")
+
+    def play_lead(self):
+        print("Your deck:")
+        print(self.get_deck())
+        while True:
+            card = get_card()
             try:
                 self.play_card(card)
                 return

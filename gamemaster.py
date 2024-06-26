@@ -7,6 +7,7 @@ class GameMaster:
         self._contract = None
         self._side = None
         self._declarer = None
+        self._dummy = None
     # todo create player
 
     def add_player(self, player):
@@ -79,13 +80,21 @@ class GameMaster:
             if self._players[i].get_turn() is True:
                 index = i
                 break
+        lead = False
         while True:
             if self._players[index].is_empty_deck() is True:
                 break
             for i in range(4):
                 if self._players[index+i].is_empty_deck() is True:
                     break
-                self._players[index+i].get_play()
+                if lead is False:
+                    self._players[index+i].play_lead()
+                    lead = True
+                elif self._players[index+i].get_is_dummy() is True:
+                    self._declarer.dummy_play()
+                    pass
+                else:
+                    self._players[index+i].get_play(self._dummy)
 
     def display(self):
         # todo display
@@ -96,5 +105,7 @@ class GameMaster:
         self._players[1].set_partner(self._players[3])
         self._players[2].set_partner(self._players[0])
         self._players[3].set_partner(self._players[1])
-        self._declarer.get_partner().set_is_dummy(True)
+
+        self._dummy = self._declarer.get_partner()
+        self._dummy.set_is_dummy(True)
         # we set partners to each player, and we set declarer partner to dummy
