@@ -1,4 +1,4 @@
-from decks import get_decks, get_bid
+from decks import get_decks, get_bid, get_bid_info, get_end
 
 
 class GameMaster:
@@ -6,6 +6,7 @@ class GameMaster:
         self._players = []
         self._contract = None
         self._side = None
+        self._declarer = None
     # todo create player
 
     def add_player(self, player):
@@ -19,8 +20,8 @@ class GameMaster:
         if len(self._players) == 4:
             return True
         else:
-            pass
-            # todo some kind of error
+            print("Not enough players in this game")
+            return False
 
     def prepare_players(self):
         decks = get_decks()
@@ -34,27 +35,38 @@ class GameMaster:
         if self.is_ready():
             self.prepare_players()
             self.bidding()
+            self.gameplay()
 
     def get_players(self):
         for player in self._players:
             print(player)
 
-    def check_end(self, bids):
-        size = len(bids)
-        if bids[size - 1] == "pass" and bids[size - 2] == "pass" and bids[size - 3] == "pass" and bids[size - 4] == "pass":
-            return True
-
     def bidding(self):
         bids = []
         while True:
-            # player bids
-            # verification of bid
-            # 4 passes -> stop
             for player in self._players:
                 print(bids[-4:])
                 bids = get_bid(bids)
-                if len(bids) > 3 and self.check_end(bids):
-                    self._contract = bids[-5]
-                    # todo special case when counter or re-counter
-                    # todo get sides
+                if get_end(bids):
+                    self._contract, player_id = get_bid_info(bids)
+                    self._declarer = self._players[player_id]
+                    print(self._contract)
+                    print(self._declarer)
+                    self._side = self._declarer.get_side()
                     return
+
+    def gameplay(self):
+        # we have contract
+        # we know which side has contract
+        # we know who is going to be a dummy
+        # 3 types of turns:
+        # 1 one starting and revealing dummy
+        # 2 normal
+        # 3 dummy
+        self.display()
+        pass
+
+    def display(self):
+        # todo display
+        pass
+
