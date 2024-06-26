@@ -4,13 +4,18 @@ import random
 
 def get_cards():
     cards = []
-    colors = ["S", "C", "D", "H"]
+    colors = ["C", "D", "H", "S"]
     values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
     for color in colors:
         for value in values:
             card = Card(value, color)
             cards.append(card)
     return cards
+
+
+def mysort(card):
+    values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
+    return card.get_color(), values.index(card.get_value())
 
 
 def get_decks():
@@ -23,6 +28,8 @@ def get_decks():
             decks[i].append(card)
             cards.remove(card)
     decks[3] = cards
+    for deck in decks:
+        deck.sort(key=mysort)
     return decks
 
 
