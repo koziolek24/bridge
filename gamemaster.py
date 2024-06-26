@@ -36,8 +36,9 @@ class GameMaster:
         if self.is_ready():
             self.prepare_players()
             self.bidding()
-            self.prepare()
-            self.gameplay()
+            if self._contract is not None:
+                self.prepare()
+                self.gameplay()
 
     def get_players(self):
         for player in self._players:
@@ -58,7 +59,10 @@ class GameMaster:
                         print("There is no contract - 4 passes")
                     else:
                         self._declarer = self._players[player_id]
-                        self._side = self._declarer.get_side()
+                        if self._declarer.get_side() == 'N' or self._declarer.get_side() == 'S':
+                            self._side = 'NS'
+                        else:
+                            self._side = 'EW'
                         self._contract = contract
                         self._players[(player_id + 1) % 4].set_turn(True)
                         # we set turn to player next to declarer
@@ -74,6 +78,8 @@ class GameMaster:
                 index = i
                 break
         lead = False
+        score_ns = 0
+        score_ew = 0
         for j in range(13):
             color = None
             if self._players[index].is_empty_deck() is True:
@@ -81,7 +87,13 @@ class GameMaster:
             set_cards = []
             for i in range(4):
                 idi = (index + i) % 4
+                print()
                 print(self._players[idi].get_fullname())
+                print("NS: ", end="")
+                print(score_ns, end=" ")
+                print("EW: ", end="")
+                print(score_ew)
+                print()
                 if i > 0:
                     color = set_cards[0][-1].get_color()
                 if self._players[idi].is_empty_deck() is True:
@@ -95,8 +107,23 @@ class GameMaster:
                 else:
                     set_cards.append((idi, self._players[idi].get_play(self._dummy, color)))
             index = get_winner(set_cards, trump)
-            # finding winner to start
-            # setting index to winners id
+            if self._players[index].get_side() == 'N' or self._players[index].get_side() == 'S':
+                score_ns += 1
+            else:
+                score_ew += 1
+        # checking of score
+        if self._side == 'NS':
+            score_ns = score_ns - 6 - int(self._contract[0])
+            if score_ns < 0:
+                print("You lost")
+            else:
+                print("You won")
+        else:
+            score_ew = score_ew - 6 - int(self._contract[0])
+            if score_ew < 0:
+                print("You lost")
+            else:
+                print("You won")
 
     def display(self):
         # todo display
@@ -107,7 +134,10 @@ class GameMaster:
         self._players[1].set_partner(self._players[3])
         self._players[2].set_partner(self._players[0])
         self._players[3].set_partner(self._players[1])
-
+        self._players[0].set_side('N')
+        self._players[1].set_side('E')
+        self._players[2].set_side('S')
+        self._players[3].set_side('W')
         self._dummy = self._declarer.get_partner()
         self._dummy.set_is_dummy(True)
         # we set partners to each player, and we set declarer partner to dummy
