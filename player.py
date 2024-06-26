@@ -84,27 +84,30 @@ class Player:
     def is_in_deck(self, card):
         return self._deck.is_in_deck(card)
 
-    def get_play(self, dummy):
+    def is_color_in_deck(self, color):
+        return self._deck.is_color_in_deck(color)
+
+    def get_play(self, dummy, color):
         print("Dummy's deck:")
         print(dummy.get_deck())
         print("Your deck:")
         print(self.get_deck())
-        card = get_card(self)
+        card = get_card(self, color)
         self.play_card(card)
-        return
+        return card
 
-    def dummy_play(self):
+    def dummy_play(self, color):
         print("Your deck:")
         print(self.get_deck())
         print("Dummy's deck:")
         print(self._partner.get_deck())
-        card = get_card(self._partner)
+        card = get_card(self._partner, color)
         self._partner.play_card(card)
-        return
+        return card
 
     def play_lead(self):
         print("Your deck:")
         print(self.get_deck())
-        card = get_card(self)
+        card = get_card(self, None)
         self.play_card(card)
-        return
+        return card

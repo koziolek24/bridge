@@ -44,3 +44,9 @@ class Deck:
             if deck_card.get_card() == card.get_card():
                 return True
         return False
+
+    def is_color_in_deck(self, color):
+        for deck_card in self._deck:
+            if deck_card.get_color() == color:
+                return True
+        return False

@@ -136,7 +136,7 @@ def get_end(bids):
             return False
 
 
-def get_card(player):
+def get_card(player, card_color):
     values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
     colors = ["C", "D", "H", "S"]
     possible_cards = []
@@ -150,9 +150,27 @@ def get_card(player):
                 card = Card(card[0], card[1:])
             else:
                 card = Card(card[0] + card[1], card[2:])
-            if player.is_in_deck(card):
-                return card
+            if (card.get_color() == card_color) or (player.is_color_in_deck(card_color) is not True) or (card_color is None):
+                if player.is_in_deck(card):
+                    return card
+                else:
+                    print("Card is not in deck")
             else:
-                print("Card is not in deck")
+                print("Invalid color")
         else:
             print("Invalid input card")
+
+
+def get_winner(set_cards, trump):
+    values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', "J", "Q", "K", "A"]
+    value = set_cards[0][1].get_value()
+    color = set_cards[0][1].get_color()
+    win_index = set_cards[0][0]
+    for index, card in set_cards:
+        if card.get_color() == color and values.index(card.get_value()) > values.index(value):
+            win_index = index
+        elif card.get_color() == trump and color != trump:
+            win_index = index
+            color = trump
+            value = card.get_value()
+    return win_index

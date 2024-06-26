@@ -1,4 +1,4 @@
-from decks import get_decks, get_bid, get_bid_info, get_end
+from decks import get_decks, get_bid, get_bid_info, get_end, get_winner
 
 
 class GameMaster:
@@ -62,39 +62,41 @@ class GameMaster:
                         self._contract = contract
                         self._players[(player_id + 1) % 4].set_turn(True)
                         # we set turn to player next to declarer
-                        print(self._contract)
-                        print(self._declarer.get_fullname())
+                        # print(self._contract)
+                        # print(self._declarer.get_fullname())
                     return
 
     def gameplay(self):
-        # we have contract
-        # we know which side has contract
-        # we know who is going to be a dummy
-        # 3 types of turns:
-        # 1 one starting and revealing dummy
-        # 2 normal
-        # 3 dummy
-        # first we find player whose turn it is
+        trump = self._contract[-1]
         index = 0
         for i in range(4):
             if self._players[i].get_turn() is True:
                 index = i
                 break
         lead = False
-        while True:
+        for j in range(13):
+            color = None
             if self._players[index].is_empty_deck() is True:
                 break
+            set_cards = []
             for i in range(4):
-                if self._players[index+i].is_empty_deck() is True:
+                idi = (index + i) % 4
+                print(self._players[idi].get_fullname())
+                if i > 0:
+                    color = set_cards[0][-1].get_color()
+                if self._players[idi].is_empty_deck() is True:
                     break
                 if lead is False:
-                    self._players[index+i].play_lead()
+                    set_cards.append((idi, self._players[idi].play_lead()))
                     lead = True
-                elif self._players[index+i].get_is_dummy() is True:
-                    self._declarer.dummy_play()
+                elif self._players[idi].get_is_dummy() is True:
+                    set_cards.append((idi, self._declarer.dummy_play(color)))
                     pass
                 else:
-                    self._players[index+i].get_play(self._dummy)
+                    set_cards.append((idi, self._players[idi].get_play(self._dummy, color)))
+            index = get_winner(set_cards, trump)
+            # finding winner to start
+            # setting index to winners id
 
     def display(self):
         # todo display
