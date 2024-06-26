@@ -48,11 +48,18 @@ class GameMaster:
                 print(bids[-4:])
                 bids = get_bid(bids)
                 if get_end(bids):
-                    self._contract, player_id = get_bid_info(bids)
-                    self._declarer = self._players[player_id]
-                    print(self._contract)
-                    print(self._declarer)
-                    self._side = self._declarer.get_side()
+                    contract, player_id = get_bid_info(bids)
+                    if player_id == -1:
+                        self._contract = None
+                        self._side = None
+                        self._declarer = None
+                        print("There is no contract - 4 passes")
+                    else:
+                        self._declarer = self._players[player_id]
+                        self._side = self._declarer.get_side()
+                        self._contract = contract
+                        print(self._contract)
+                        print(self._declarer.get_fullname())
                     return
 
     def gameplay(self):

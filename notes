@@ -1,0 +1,20 @@
+***priorities***
+gameplay of any sort
+
+***must***
+fix 4 passes
+add sorting cards
+add verifying bids ie. counter only after bid, re only after counter
+create player
+verifying player before adding him
+gameplay verification
+
+
+***non priority***
+refactor code to GameMaster.bidding - its ugly
+
+
+***optional***
+database with scores, bidding and gameplay
+online connection
+display preferably in some gui

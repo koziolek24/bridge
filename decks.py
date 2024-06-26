@@ -62,8 +62,8 @@ def get_bid(bids):
 
 
 def get_player(bid, player, bids):
-    for i in range(player, len(bids), 2):
-        if bids[i][-1] == bid[-1]:
+    for i in range(len(bids)):
+        if bids[i][-1] == bid[-1] and i % 2 == player % 2:
             return bid, i % 4
 
 
@@ -81,17 +81,18 @@ def get_bid_info(bids):
             player = i % 4
             # we know side and contract, now we just need to know who will play
             return get_player(final_bid, player, bids)
+    return -1, -1
 
 
 def get_end(bids):
     # either 3 passes after contract, or 4 passes from the beginning
     pass_cnt = 0
-    for i in range(len(bids), -1, -1):
+    for i in range(len(bids)-1, -1, -1):
         if bids[i] == "pass":
             pass_cnt += 1
-        elif pass_cnt == 3 and bids[i] != "pass":
+        if pass_cnt == 3 and bids[i] != "pass":
             return True
-        elif pass_cnt == 4:
+        if pass_cnt == 4:
             return True
-        else:
+        if pass_cnt != 3 and bids[i] != "pass":
             return False
