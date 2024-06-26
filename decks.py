@@ -36,31 +36,41 @@ def get_decks():
 def verify(bid, possible_bid, bids):
     if bid not in possible_bid:
         return False
-    # pass is always correct
     if bid == "pass":
         return True
-    # counter only after bid
     elif bid == "counter":
-        index = len(bids) - 1
-        while index >= len(bids) - 4:
-            if bids[index] == "counter":
-                return False
-            elif bids[index] == "re-counter":
-                return False
-            elif bids[index] != "pass":
-                return True
-    # re-counter only after counter
+        return verify_counter(bids)
     elif bid == "re-counter":
-        index = len(bids) - 1
-        while index >= len(bids) - 4:
-            if bids[index] == "counter":
+        return verify_re_counter(bids)
+    else:
+        return verify_play(possible_bid, bids, bid)
+
+
+def verify_counter(bids):
+    if len(bids) > 1:
+        if bids[-1] != "pass" and bids[-1] != "counter" and bids[-1] != "re-counter":
+            return True
+    if len(bids) > 3:
+        if bids[-1] == "pass" and bids[-2] == "pass":
+            if bids[-3] != "pass" and bids[-3] != "counter" and bids[-3] != "re-counter":
                 return True
-            elif bids[index] == "re-counter":
-                return False
-            elif bids[index] != "pass":
-                return False
+    return False
+
+
+def verify_re_counter(bids):
+    if len(bids) > 1:
+        if bids[-1] == "counter":
+            return True
+    if len(bids) > 3:
+        if bids[-1] == "pass" and bids[-2] == "pass":
+            if bids[-3] == "counter":
+                return True
+    return False
+
+
+def verify_play(possible_bid, bids, bid):
     last_bid = ""
-    for i in range(len(bids)-1, -1, -1):
+    for i in range(len(bids) - 1, -1, -1):
         if bids[i] != "pass" and bids[i] != "counter" and bids[i] != "re-counter":
             last_bid = bids[i]
             break
@@ -99,15 +109,16 @@ def get_bid_info(bids):
     final_bid = ""
     for i in range(len(bids)-1, -1, -1):
         # we backtrack of bids to search last non counter/re-counter bid
-        if bids[i] == "re-counter":
+        if bids[i] == "re-counter" and final_bid == "":
             final_bid = "re-counter"
-        elif bids[i] == "counter" and final_bid != "re-counter":
+        elif bids[i] == "counter" and final_bid == "":
             final_bid = "counter"
         elif bids[i] != "pass":
-            final_bid += bids[i]
-            player = i % 4
-            # we know side and contract, now we just need to know who will play
-            return get_player(final_bid, player, bids)
+            if bids[i] != "counter" and bids[i] != "re-counter":
+                final_bid += bids[i]
+                player = i % 4
+                # we know side and contract, now we just need to know who will play
+                return get_player(final_bid, player, bids)
     return -1, -1
 
 
