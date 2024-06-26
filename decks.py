@@ -52,7 +52,46 @@ def get_bid(bids):
             possible_bids.append(bid)
     while True:
         bid = input("Input your bid: ")
+        # todo correct bids
+        # counter only after bid
+        # re-counter only after counter
         if verify(bid, possible_bids, bids):
             bids.append(bid)
             return bids
         print("Invalid input\n")
+
+
+def get_player(bid, player, bids):
+    for i in range(player, len(bids), 2):
+        if bids[i][-1] == bid[-1]:
+            return bid, i % 4
+
+
+def get_bid_info(bids):
+    final_bid = ""
+    player = 0
+    for i in range(len(bids)-1, -1, -1):
+        # we backtrack of bids to search last non counter/re-counter bid
+        if bids[i] == "re-counter":
+            final_bid = "re-counter"
+        elif bids[i] == "counter" and final_bid != "re-counter":
+            final_bid = "counter"
+        elif bids[i] != "pass":
+            final_bid += bids[i]
+            player = i % 4
+            # we know side and contract, now we just need to know who will play
+            return get_player(final_bid, player, bids)
+
+
+def get_end(bids):
+    # either 3 passes after contract, or 4 passes from the beginning
+    pass_cnt = 0
+    for i in range(len(bids), -1, -1):
+        if bids[i] == "pass":
+            pass_cnt += 1
+        elif pass_cnt == 3 and bids[i] != "pass":
+            return True
+        elif pass_cnt == 4:
+            return True
+        else:
+            return False
