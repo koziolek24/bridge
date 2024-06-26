@@ -38,3 +38,9 @@ class Deck:
         if len(self._deck) == 0:
             return True
         return False
+
+    def is_in_deck(self, card):
+        for deck_card in self._deck:
+            if deck_card.get_card() == card.get_card():
+                return True
+        return False

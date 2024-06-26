@@ -46,7 +46,7 @@ class GameMaster:
     def bidding(self):
         bids = []
         while True:
-            for player in self._players:
+            for i in range(4):
                 print(bids[-4:])
                 bids = get_bid(bids)
                 if get_end(bids):

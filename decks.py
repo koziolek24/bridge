@@ -36,9 +36,30 @@ def get_decks():
 def verify(bid, possible_bid, bids):
     if bid not in possible_bid:
         return False
-    last_bid = ""
-    if bid == "pass" or bid == "counter" or bid == "re-counter":
+    # pass is always correct
+    if bid == "pass":
         return True
+    # counter only after bid
+    elif bid == "counter":
+        index = len(bids) - 1
+        while index >= len(bids) - 4:
+            if bids[index] == "counter":
+                return False
+            elif bids[index] == "re-counter":
+                return False
+            elif bids[index] != "pass":
+                return True
+    # re-counter only after counter
+    elif bid == "re-counter":
+        index = len(bids) - 1
+        while index >= len(bids) - 4:
+            if bids[index] == "counter":
+                return True
+            elif bids[index] == "re-counter":
+                return False
+            elif bids[index] != "pass":
+                return False
+    last_bid = ""
     for i in range(len(bids)-1, -1, -1):
         if bids[i] != "pass" and bids[i] != "counter" and bids[i] != "re-counter":
             last_bid = bids[i]
@@ -76,7 +97,6 @@ def get_player(bid, player, bids):
 
 def get_bid_info(bids):
     final_bid = ""
-    player = 0
     for i in range(len(bids)-1, -1, -1):
         # we backtrack of bids to search last non counter/re-counter bid
         if bids[i] == "re-counter":
@@ -105,13 +125,23 @@ def get_end(bids):
             return False
 
 
-def get_card():
-    card = input("Input your card: ")
-    try:
-        if card[0] != '1':
-            card = Card(card[0], card[1:])
+def get_card(player):
+    values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
+    colors = ["C", "D", "H", "S"]
+    possible_cards = []
+    for color in colors:
+        for value in values:
+            possible_cards.append(str(value) + color)
+    while True:
+        card = input("Input your card: ")
+        if card in possible_cards:
+            if card[0] != '1':
+                card = Card(card[0], card[1:])
+            else:
+                card = Card(card[0] + card[1], card[2:])
+            if player.is_in_deck(card):
+                return card
+            else:
+                print("Card is not in deck")
         else:
-            card = Card(card[0] + card[1], card[2:])
-        return card
-    except:
-        pass
+            print("Invalid input card")
