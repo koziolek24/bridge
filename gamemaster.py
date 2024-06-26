@@ -35,6 +35,7 @@ class GameMaster:
         if self.is_ready():
             self.prepare_players()
             self.bidding()
+            self.prepare()
             self.gameplay()
 
     def get_players(self):
@@ -58,6 +59,8 @@ class GameMaster:
                         self._declarer = self._players[player_id]
                         self._side = self._declarer.get_side()
                         self._contract = contract
+                        self._players[(player_id + 1) % 4].set_turn(True)
+                        # we set turn to player next to declarer
                         print(self._contract)
                         print(self._declarer.get_fullname())
                     return
@@ -70,10 +73,28 @@ class GameMaster:
         # 1 one starting and revealing dummy
         # 2 normal
         # 3 dummy
-        self.display()
-        pass
+        # first we find player whose turn it is
+        index = 0
+        for i in range(4):
+            if self._players[i].get_turn() is True:
+                index = i
+                break
+        while True:
+            if self._players[index].is_empty_deck() is True:
+                break
+            for i in range(4):
+                if self._players[index+i].is_empty_deck() is True:
+                    break
+                self._players[index+i].get_play()
 
     def display(self):
         # todo display
         pass
 
+    def prepare(self):
+        self._players[0].set_partner(self._players[2])
+        self._players[1].set_partner(self._players[3])
+        self._players[2].set_partner(self._players[0])
+        self._players[3].set_partner(self._players[1])
+        self._declarer.get_partner().set_is_dummy(True)
+        # we set partners to each player, and we set declarer partner to dummy

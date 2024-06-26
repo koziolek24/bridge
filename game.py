@@ -29,7 +29,12 @@ class Deck:
             if cards.get_card() == card.get_card():
                 self._deck.remove(cards)
                 return
+        raise ValueError("Card not removed")
 
     def set_deck(self, deck):
         self._deck = deck
     
+    def is_empty(self):
+        if len(self._deck) == 0:
+            return True
+        return False

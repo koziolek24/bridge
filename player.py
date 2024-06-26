@@ -1,4 +1,4 @@
-from game import Deck
+from game import Deck, Card
 
 
 class Player:
@@ -58,10 +58,41 @@ class Player:
         self._deck.set_deck(deck)
 
     def play_card(self, card):
-        self._deck.remove_card(card)
+        try:
+            self._deck.remove_card(card)
+        except ValueError:
+            raise ValueError("card not in deck")
 
     def get_side(self):
         return self._side
 
     def set_side(self, side):
         self._side = side
+
+    def set_partner(self, partner):
+        self._partner = partner
+
+    def get_partner(self):
+        return self._partner
+
+    def is_empty_deck(self):
+        if self._deck.is_empty() is True:
+            return True
+        return False
+
+    def get_play(self):
+        print(self.get_deck())
+        while True:
+            card = input("Input your card: ")
+            try:
+                if card[0] != '1':
+                    card = Card(card[0], card[1:])
+                else:
+                    card = Card(card[0] + card[1], card[2:])
+            except:
+                pass
+            try:
+                self.play_card(card)
+                return
+            except:
+                print("Invalid card")
